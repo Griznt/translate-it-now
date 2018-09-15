@@ -26,9 +26,13 @@ export function translate(data, onSuccess, onFailure) {
   makeApiRequest(data, false)
     .then(function(resp) {
       if (resp && resp.status === 200) {
-        console.log(resp.data);
         onSuccess(resp.data);
-      } else onFailure(`Request failed${resp ? ` with status: ${resp.status}` : ""}`);
+      } else {
+        console.warn("  ***", { resp });
+        onFailure(
+          `Request failed${resp ? ` with status: ${resp.status}` : ""}`
+        );
+      }
     })
     .catch(error => {
       console.error(error);

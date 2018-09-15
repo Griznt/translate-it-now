@@ -46,15 +46,19 @@ class FileInputContainer extends React.Component {
 
   render() {
     return (
-      <div className="input-file-container">
+      <div class="file-upload">
+        <label for="upload" class="file-upload__label">
+          Select file
+        </label>
         <input
+          id="upload"
+          className="file-upload__input"
           type="file"
+          name="file-upload"
           onChange={this.uploadFile}
           accept={ACCEPTED_FILE_EXTENSIONS}
           disabled={this.props.disabled}
-          className="input-file"
         />
-
         {this.state.error ? (
           <div className={`${this.props.className} error`}>
             {this.state.error.message}

@@ -1,11 +1,15 @@
 import React from "react";
 import "./loader.css";
 
-const Loader = () => {
+const Loader = props => {
   return (
-    <div class="lds-ripple">
-      <div />
-      <div />
+    <div className={props.className}>
+      <div class="lds-ellipsis">
+        <div />
+        <div />
+        <div />
+        <div />
+      </div>
     </div>
   );
 };

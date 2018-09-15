@@ -13,6 +13,7 @@ class App extends React.Component {
 
     this.state = {
       source: {
+        collapsed: false,
         text: null,
         language: null
       },
@@ -21,7 +22,8 @@ class App extends React.Component {
         language: null
       },
       loading: false,
-      error: null
+      error: null,
+      translateHighlighted: true
     };
 
     this.onTextLoaded = this.onTextLoaded.bind(this);
@@ -31,6 +33,8 @@ class App extends React.Component {
     this.setError = this.setError.bind(this);
     this.clearError = this.clearError.bind(this);
     this.onTranslateSuccess = this.onTranslateSuccess.bind(this);
+    this.toggleSourceText = this.toggleSourceText.bind(this);
+    this.toggleHighlight = this.toggleHighlight.bind(this);
   }
 
   onTextLoaded(text) {
@@ -51,7 +55,11 @@ class App extends React.Component {
 
   onTranslateSuccess(text) {
     this.clearError();
-    this.setState({ target: { ...this.state.target, text }, loading: false });
+    this.setState({
+      target: { ...this.state.target, text },
+      loading: false,
+      source: { ...this.state.source, collapsed: true }
+    });
   }
 
   translate() {
@@ -79,6 +87,19 @@ class App extends React.Component {
 
   clearError() {
     this.setState({ error: null });
+  }
+
+  toggleSourceText() {
+    this.setState({
+      source: {
+        ...this.state.source,
+        collapsed: !this.state.source.collapsed
+      }
+    });
+  }
+
+  toggleHighlight() {
+    this.setState({ translateHighlighted: !this.state.translateHighlighted });
   }
 
   render() {
@@ -120,40 +141,70 @@ class App extends React.Component {
             disabled={!this.state.target.language || this.state.loading}
             text="translateIt!"
           />
+          <div className="highlight-switcher" onClick={this.toggleHighlight}>
+            <span className="label">Highlight translated sentences</span>
+            <div className="checkbox">
+              <input
+                type="checkbox"
+                checked={this.state.translateHighlighted}
+              />
+              <span />
+            </div>
+          </div>
         </div>
         <div className="text-block">
-          {this.state.loading ? <Loader /> : null}
+          {this.state.loading ? <Loader className="loader" /> : null}
           {this.state.source.text ? (
-            <div className="source-text">
-              <span className="header">Source text</span>
+            <div
+              className={`source-text${
+                this.state.source.collapsed ? " collapsed" : ""
+              }`}
+            >
+              <div className="header" onClick={this.toggleSourceText}>
+                Source text
+              </div>
               {/* @TODO: change to textarea */}
-              {this.state.source.text.split("\n").map((item, key) => {
-                return (
-                  <div className="sentence" key={key}>
-                    <span className="source">{item}</span>
-                    <br />
-                  </div>
-                );
-              })}
+              <div className="content">
+                {this.state.source.text.split("\n").map((item, key) => {
+                  return (
+                    <div className="sentence" key={key}>
+                      <span className="source">{item}</span>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           ) : null}
           {this.state.error ? (
             <div className="error">{this.state.error}</div>
           ) : this.state.target.text ? (
-            <div className="target-text">
-              <span className="header">Translated text:</span>
-              {this.state.target.text.map((item, key) => {
-                return (
-                  <div className="sentence" key={key}>
-                    <span className="source">{item.source}</span>
-                    <br />
-                    <span className="target">{item.target}</span>
-
-                    <br />
-                    <br />
-                  </div>
-                );
-              })}
+            <div
+              className={`target-text${
+                this.state.source.collapsed ? " extended" : ""
+              }`}
+            >
+              <div className="header">Translated text</div>
+              <div
+                className={`content${
+                  this.state.source.collapsed ? " extended" : ""
+                }`}
+              >
+                {this.state.target.text.map((item, key) => {
+                  return (
+                    <div className="sentence" key={key}>
+                      <span className="source">{item.source}</span>
+                      <span
+                        className={`target${
+                          this.state.translateHighlighted ? " highlighted" : ""
+                        }`}
+                      >
+                        {item.target}
+                      </span>
+                      <br />
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           ) : null}
         </div>
