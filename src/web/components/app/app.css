@@ -1,12 +1,12 @@
 @font-face {
-  font-family: Lobster;
-  src: url("//fonts.googleapis.com/css?family=Lobster|Cabin:400,700");
+  font-family: "Roboto";
+  src: ("https://fonts.googleapis.com/css?family=Roboto");
 }
 .app {
   background: steelblue;
   width: auto;
   height: 800px;
-  font-family: "Lobster";
+  font-family: "Roboto";
   font-weight: 500;
   line-height: 1.1;
   color: gray;
