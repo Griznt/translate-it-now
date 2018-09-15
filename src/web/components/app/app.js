@@ -1,5 +1,5 @@
 import React from "react";
-import "./app.css";
+import "./main.css";
 import FileInputContainer from "../input/file-input-container";
 import SelectContainer from "../select/select-container";
 import ButtonContainer from "../button/button-container";
@@ -35,6 +35,7 @@ class App extends React.Component {
     this.onTranslateSuccess = this.onTranslateSuccess.bind(this);
     this.toggleSourceText = this.toggleSourceText.bind(this);
     this.toggleHighlight = this.toggleHighlight.bind(this);
+    this.getParsedLanguages = this.getParsedLanguages.bind(this);
   }
 
   onTextLoaded(text) {
@@ -102,7 +103,14 @@ class App extends React.Component {
     this.setState({ translateHighlighted: !this.state.translateHighlighted });
   }
 
+  getParsedLanguages() {
+    return Object.keys(LANGUAGES).map(key => {
+      return { value: key, label: LANGUAGES[key] };
+    });
+  }
+
   render() {
+    const languages = this.getParsedLanguages();
     return (
       <div className="app">
         <span className="logo-text">TRANSLATE IT! APP</span>
@@ -114,7 +122,7 @@ class App extends React.Component {
             disabled={this.state.loading}
           />
           <SelectContainer
-            options={LANGUAGES}
+            options={languages}
             className="language"
             settings={{
               placeholder: "select source language",
@@ -125,7 +133,7 @@ class App extends React.Component {
             onSelect={this.onSelectSourceLanguage}
           />
           <SelectContainer
-            options={LANGUAGES}
+            options={languages}
             className="language"
             settings={{
               placeholder: "select target language",
