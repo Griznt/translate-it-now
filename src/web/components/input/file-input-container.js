@@ -27,7 +27,11 @@ class FileInputContainer extends React.Component {
 
         this.readFile(file);
       } else {
-        this.setState({ error: { message: "Incorrect file extension!" } });
+        this.setState({
+          error: {
+            message: `Incorrect file extension!\r\nOnly [${ACCEPTED_FILE_EXTENSIONS}] is allowed.`
+          }
+        });
         console.error("Incorrect file extension!");
       }
     } else {
@@ -64,7 +68,14 @@ class FileInputContainer extends React.Component {
       <div class="file-upload">
         {this.state.error ? (
           <div className={`${this.props.className} error`}>
-            {this.state.error.message}
+            {this.state.error.message.split("\r\n").map((item, key) => {
+              return (
+                <span key={key}>
+                  {item}
+                  <br />
+                </span>
+              );
+            })}
           </div>
         ) : null}
         <label for="upload" class="file-upload__label">
@@ -76,7 +87,7 @@ class FileInputContainer extends React.Component {
           type="file"
           name="file-upload"
           onChange={this.uploadFile}
-          // accept={ACCEPTED_FILE_EXTENSIONS}
+          accept={ACCEPTED_FILE_EXTENSIONS}
           disabled={this.props.disabled}
         />
       </div>
