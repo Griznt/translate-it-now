@@ -55,7 +55,7 @@ class App extends React.Component {
 
   onTranslateSuccess(text) {
     this.clearError();
-    this.setState({ target: { ...this.state.target, text } });
+    this.setState({ target: { ...this.state.target, text }, loading: false });
   }
 
   translate() {
@@ -72,7 +72,7 @@ class App extends React.Component {
         this.onTranslateSuccess,
         this.setError
       );
-      this.setState({ target: { ...this.state.target, text }, loading: false });
+      // this.setState({ target: { ...this.state.target, text }, loading: false });
     } catch (error) {
       this.setError(error);
     }
