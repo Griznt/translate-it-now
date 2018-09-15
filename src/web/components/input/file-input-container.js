@@ -15,13 +15,24 @@ class FileInputContainer extends React.Component {
   }
 
   uploadFile(event) {
+    this.setState({ error: null });
     let file = event.target.files[0];
 
     if (file) {
-      let data = new FormData();
-      data.append("file", file);
+      if (
+        ACCEPTED_FILE_EXTENSIONS.includes(this.parseFileExtension(file.name))
+      ) {
+        let data = new FormData();
+        data.append("file", file);
 
-      this.readFile(file);
+        this.readFile(file);
+      } else {
+        this.setState({ error: { message: "Incorrect file extension!" } });
+        console.error("Incorrect file extension!");
+      }
+    } else {
+      this.setState({ error: { message: "Incorrect file!" } });
+      console.error("Incorrect file!");
     }
   }
 
@@ -40,6 +51,10 @@ class FileInputContainer extends React.Component {
       });
   }
 
+  parseFileExtension(filename) {
+    return /[.]/.exec(filename) ? /[^.]+$/.exec(filename) : undefined;
+  }
+
   onTextLoaded(text) {
     this.props.onTextLoaded(text);
   }
@@ -47,6 +62,11 @@ class FileInputContainer extends React.Component {
   render() {
     return (
       <div class="file-upload">
+        {this.state.error ? (
+          <div className={`${this.props.className} error`}>
+            {this.state.error.message}
+          </div>
+        ) : null}
         <label for="upload" class="file-upload__label">
           Select file
         </label>
@@ -56,14 +76,9 @@ class FileInputContainer extends React.Component {
           type="file"
           name="file-upload"
           onChange={this.uploadFile}
-          accept={ACCEPTED_FILE_EXTENSIONS}
+          // accept={ACCEPTED_FILE_EXTENSIONS}
           disabled={this.props.disabled}
         />
-        {this.state.error ? (
-          <div className={`${this.props.className} error`}>
-            {this.state.error.message}
-          </div>
-        ) : null}
       </div>
     );
   }

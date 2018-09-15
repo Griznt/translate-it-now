@@ -71,7 +71,9 @@ button:focus {
 button:active {
   transform: scale(0.99);
 }
-
+.source-text-load.error {
+  text-align: center;
+}
 .file-upload {
   position: relative;
   display: inline-block;
