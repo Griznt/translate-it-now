@@ -4,13 +4,11 @@ class ButtonContainer extends React.Component {
   render() {
     return (
       <button
-        className={this.props}
-        value={this.props.initialValue}
+        className={`button ${this.props.className}`}
         onClick={this.props.onClick}
         disabled={this.props.disabled}
       >
         {this.props.text}
-        {this.props.children ? this.props.children : null}
       </button>
     );
   }

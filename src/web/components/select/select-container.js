@@ -20,12 +20,15 @@ class SelectContainer extends React.Component {
     const { selectedOption } = this.state;
 
     return (
-      <Select
-        value={selectedOption}
-        onChange={this.handleChange}
-        options={this.props.options}
-        {...this.props.settings}
-      />
+      <div className={`select ${this.props.className}`}>
+        <Select
+          classNamePrefix={this.props.className}
+          value={selectedOption}
+          onChange={this.handleChange}
+          options={this.props.options}
+          {...this.props.settings}
+        />
+      </div>
     );
   }
 }

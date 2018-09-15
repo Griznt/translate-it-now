@@ -1,33 +1,104 @@
-.App {
-  text-align: center;
-  /* background: rebeccapurple; */
+@font-face {
+  font-family: Lobster;
+  src: url("//fonts.googleapis.com/css?family=Lobster|Cabin:400,700");
 }
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+.app {
+  background: steelblue;
+  width: auto;
+  height: 800px;
+  font-family: "Lobster";
+  font-weight: 500;
+  line-height: 1.1;
+  color: gray;
 }
-
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
+.logo-text {
+  font-size: 40px;
   color: white;
+  display: flex;
+  margin-left: 25%;
+}
+.sidebar-left {
+  width: 30%;
+  display: inline-block;
+}
+.text-block {
+  padding: 10px 5%;
+  width: 70%;
+  display: inline-table;
+  position: absolute;
+}
+.input-file-container {
+  position: relative;
+  overflow: hidden;
+}
+.input-file {
+  margin: 10px;
+  width: 200px;
+  color: white;
+  background-color: gray;
+  padding: 4px 10px;
+  border-radius: 8px;
+  /* font-size: 20px; */
+  font-weight: bold;
+}
+.input-file-container input {
+  /* color: greenyellow; */
+  /* opacity: 0; */
 }
 
-.App-title {
-  font-size: 1.5em;
+.select {
+  width: 200px;
+  padding: 10px;
 }
-
-.App-intro {
-  font-size: large;
+.language__control {
+  color: yellow;
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.button {
+  width: 100px;
+  color: gray;
+  border-radius: 2px;
+  margin: 10px;
+}
+.button translate {
+  height: 50px;
+}
+.source-text {
+  height: 300px;
+  max-height: 50%;
+  color: white;
+  font-size: 20px;
+  border: solid 1px;
+  border-radius: 5px;
+  text-align: center;
+  padding: 20px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 80%;
+  /* left: 8%; */
+}
+.source-text .header {
+  text-decoration: underline;
+}
+.sentence {
+}
+.target-text {
+  height: 300px;
+  max-height: 50%;
+  color: white;
+  font-size: 20px;
+  border: solid 1px;
+  border-radius: 5px;
+  text-align: center;
+  padding: 20px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 80%;
+  left: 8%;
+}
+.target-text .header {
+  text-decoration: underline;
+  margin: 10px;
+}
+.error {
+  color: red;
 }

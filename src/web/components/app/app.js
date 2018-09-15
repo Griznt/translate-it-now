@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import "./app.css";
 import FileInputContainer from "../input/file-input-container";
 import SelectContainer from "../select/select-container";
@@ -7,9 +6,6 @@ import ButtonContainer from "../button/button-container";
 import Loader from "../loader/loader";
 import { translate as translateApi } from "../../axios/translate";
 import { LANGUAGES } from "../../const";
-const GOOGLE_TRANSLATE_API =
-    "https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&dt=t&dt=bd&dj=1&text=",
-  SUCCESS_RESPONSE_CODE = 200;
 
 class App extends React.Component {
   constructor(props) {
@@ -72,19 +68,9 @@ class App extends React.Component {
         this.onTranslateSuccess,
         this.setError
       );
-      // this.setState({ target: { ...this.state.target, text }, loading: false });
     } catch (error) {
       this.setError(error);
     }
-
-    // axios
-    //   .get(`${GOOGLE_TRANSLATE_API}{{${source.text}}}t&tl=${source.language}`)
-    //   .then(res => {
-    //     console.warn({ res });
-    //     if (res && res.status === SUCCESS_RESPONSE_CODE) {
-    //     } else this.setError(`Response failed with status: ${res.status}`);
-    //   })
-    //   .catch(this.setError);
   }
 
   setError(error) {
@@ -97,53 +83,80 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="App">
-        <FileInputContainer
-          onTextLoaded={this.onTextLoaded}
-          disabled={this.state.loading}
-        />
-        <SelectContainer
-          options={LANGUAGES}
-          className=""
-          settings={{
-            placeholder: "select source language",
-            isSearchable: true,
-            isClearable: true,
-            isDisabled: !this.state.source.text || this.state.loading
-          }}
-          onSelect={this.onSelectSourceLanguage}
-        />
-        <SelectContainer
-          options={LANGUAGES}
-          className=""
-          settings={{
-            placeholder: "select target language",
-            isSearchable: true,
-            isClearable: true,
-            isDisabled: !this.state.source.language || this.state.loading
-          }}
-          onSelect={this.onSelectTargetLanguage}
-        />
-        <ButtonContainer
-          onClick={this.translate}
-          disabled={!this.state.target.language || this.state.loading}
-          text="translateIt!"
-        />
-        {this.state.loading ? <Loader /> : null}
-        {this.state.error ? (
-          <div className="error">{this.state.error}</div>
-        ) : this.state.target.text ? (
-          <div className="translatedText">
-            {this.state.target.text.split("\n").map((item, key) => {
-              return (
-                <span className="" key={key}>
-                  {item}
-                  <br />
-                </span>
-              );
-            })}
-          </div>
-        ) : null}
+      <div className="app">
+        <span className="logo-text">TRANSLATE IT! APP</span>
+
+        <div className="sidebar-left">
+          <FileInputContainer
+            className="source-text-load"
+            onTextLoaded={this.onTextLoaded}
+            disabled={this.state.loading}
+          />
+          <SelectContainer
+            options={LANGUAGES}
+            className="language"
+            settings={{
+              placeholder: "select source language",
+              isSearchable: true,
+              isClearable: true,
+              isDisabled: !this.state.source.text || this.state.loading
+            }}
+            onSelect={this.onSelectSourceLanguage}
+          />
+          <SelectContainer
+            options={LANGUAGES}
+            className="language"
+            settings={{
+              placeholder: "select target language",
+              isSearchable: true,
+              isClearable: true,
+              isDisabled: !this.state.source.language || this.state.loading
+            }}
+            onSelect={this.onSelectTargetLanguage}
+          />
+          <ButtonContainer
+            className="translate"
+            onClick={this.translate}
+            disabled={!this.state.target.language || this.state.loading}
+            text="translateIt!"
+          />
+        </div>
+        <div className="text-block">
+          {this.state.loading ? <Loader /> : null}
+          {this.state.source.text ? (
+            <div className="source-text">
+              <span className="header">Source text</span>
+              {/* @TODO: change to textarea */}
+              {this.state.source.text.split("\n").map((item, key) => {
+                return (
+                  <div className="sentence" key={key}>
+                    <span className="source">{item}</span>
+                    <br />
+                  </div>
+                );
+              })}
+            </div>
+          ) : null}
+          {this.state.error ? (
+            <div className="error">{this.state.error}</div>
+          ) : this.state.target.text ? (
+            <div className="target-text">
+              <span className="header">Translated text:</span>
+              {this.state.target.text.map((item, key) => {
+                return (
+                  <div className="sentence" key={key}>
+                    <span className="source">{item.source}</span>
+                    <br />
+                    <span className="target">{item.target}</span>
+
+                    <br />
+                    <br />
+                  </div>
+                );
+              })}
+            </div>
+          ) : null}
+        </div>
       </div>
     );
   }

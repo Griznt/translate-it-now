@@ -6,7 +6,6 @@ class FileInputContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      text: null,
       error: null
     };
 
@@ -23,7 +22,6 @@ class FileInputContainer extends React.Component {
       data.append("file", file);
 
       this.readFile(file);
-      // axios.post('/files', data)...
     }
   }
 
@@ -44,38 +42,25 @@ class FileInputContainer extends React.Component {
 
   onTextLoaded(text) {
     this.props.onTextLoaded(text);
-    this.setState({ text });
   }
 
   render() {
     return (
-      <span>
-        <div>
-          <input
-            type="file"
-            name="myFile"
-            onChange={this.uploadFile}
-            accept={ACCEPTED_FILE_EXTENSIONS}
-            disabled={this.props.disabled}
-          />
-        </div>
+      <div className="input-file-container">
+        <input
+          type="file"
+          onChange={this.uploadFile}
+          accept={ACCEPTED_FILE_EXTENSIONS}
+          disabled={this.props.disabled}
+          className="input-file"
+        />
 
         {this.state.error ? (
-          <div className="error">{this.state.error.message}</div>
-        ) : this.state.text ? (
-          <div>
-            {/* @TODO: change to textarea */}
-            {this.state.text.split("\n").map((item, key) => {
-              return (
-                <span className="" key={key}>
-                  {item}
-                  <br />
-                </span>
-              );
-            })}
+          <div className={`${this.props.className} error`}>
+            {this.state.error.message}
           </div>
         ) : null}
-      </span>
+      </div>
     );
   }
 }
