@@ -181,6 +181,7 @@ class App extends React.Component {
               <input
                 type="checkbox"
                 checked={this.state.translateHighlighted}
+                onChange={this.toggleHighlight}
               />
               <span />
             </div>

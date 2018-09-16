@@ -97,7 +97,7 @@ class FileInputContainer extends React.Component {
             })}
           </div>
         ) : null}
-        <label for="upload" class="file-upload__label">
+        <label className="file-upload__label">
           {this.state.selected ? this.state.selected : "Select file"}
         </label>
         <input
