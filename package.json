@@ -52,9 +52,9 @@
   },
   "scripts": {
     "postinstall": "npm run build",
-    "start": "node server.js",
+    "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "start-web": "node scripts/start.js"
+    "start-server": "node server.js"
   },
   "jest": {
     "collectCoverageFrom": [

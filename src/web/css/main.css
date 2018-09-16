@@ -59,7 +59,7 @@ button {
 
 button:hover,
 button:focus {
-  background: #d8d8d8;
+  background: #bfedff;
 }
 
 button:focus {
@@ -78,7 +78,14 @@ div.language__control--is-disabled {
   background: rgb(204, 204, 204);
   cursor: not-allowed;
 }
-
+div.language__control--is-disabled:hover {
+  background: rgb(204, 204, 204);
+  cursor: not-allowed;
+}
+div.language__control:hover {
+  background: #bfedff;
+  cursor: pointer;
+}
 .source-text-load.error {
   text-align: center;
 }
@@ -88,7 +95,7 @@ div.language__control--is-disabled {
 }
 .file-upload__label:hover {
   cursor: pointer;
-  background: #dfdfdf;
+  background: #bfedff;
 }
 
 .file-upload__label {
@@ -102,7 +109,6 @@ div.language__control--is-disabled {
   border-radius: 0.4em;
   transition: background 0.3s;
 }
-
 .file-upload__input {
   position: absolute;
   left: 0;
@@ -110,11 +116,11 @@ div.language__control--is-disabled {
   right: 0;
   bottom: 0;
   font-size: 16px;
-  width: 0;
-  height: 100%;
+  width: 200px;
+  margin: 10px 10px;
+  height: 37px;
   opacity: 0;
 }
-
 .highlight-switcher {
   color: white;
   padding: 0 10px;

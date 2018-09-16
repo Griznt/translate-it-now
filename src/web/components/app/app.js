@@ -1,5 +1,5 @@
 import React from "react";
-import "./main.css";
+import "../../css/main.css";
 import FileInputContainer from "../input/file-input-container";
 import SelectContainer from "../select/select-container";
 import ButtonContainer from "../button/button-container";

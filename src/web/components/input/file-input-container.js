@@ -99,16 +99,16 @@ class FileInputContainer extends React.Component {
         ) : null}
         <label className="file-upload__label">
           {this.state.selected ? this.state.selected : "Select file"}
+          <input
+            id="upload"
+            className="file-upload__input"
+            type="file"
+            name="file-upload"
+            onChange={this.uploadFile}
+            accept={ACCEPTED_FILE_EXTENSIONS}
+            disabled={this.props.disabled}
+          />
         </label>
-        <input
-          id="upload"
-          className="file-upload__input"
-          type="file"
-          name="file-upload"
-          onChange={this.uploadFile}
-          accept={ACCEPTED_FILE_EXTENSIONS}
-          disabled={this.props.disabled}
-        />
       </div>
     );
   }
