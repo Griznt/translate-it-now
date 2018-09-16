@@ -36,7 +36,6 @@ body {
   padding: 10px;
 }
 .button {
-  /* width: 100px; */
   color: gray;
   border-radius: 2px;
   margin: 10px;
@@ -71,6 +70,15 @@ button:focus {
 button:active {
   transform: scale(0.99);
 }
+button:disabled {
+  background: rgb(161, 161, 161);
+  cursor: not-allowed;
+}
+div.language__control--is-disabled {
+  background: rgb(161, 161, 161);
+  cursor: not-allowed;
+}
+
 .source-text-load.error {
   text-align: center;
 }
