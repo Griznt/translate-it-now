@@ -41,7 +41,11 @@ class FileInputContainer extends React.Component {
         console.error("Incorrect file extension!");
       }
     } else {
-      this.setState({ error: { message: "Incorrect file!" } });
+      this.setState({
+        error: {
+          message: "Incorrect file!"
+        }
+      });
       console.error("Incorrect file!");
     }
   }
