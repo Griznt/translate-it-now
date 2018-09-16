@@ -6,10 +6,10 @@ const port = 3000;
 const app = express();
 app.use(cors());
 
-app.use(express.static(`${__dirname}/../../build`));
+app.use(express.static(`${__dirname}/build`));
 
 app.get("/", (request, response) => {
-  response.status(200).sendFile(`${__dirname}/../../build/index.html`);
+  response.status(200).sendFile(`${__dirname}/build/index.html`);
 });
 
 app.get("/api/v1/translate", (request, response) => {
@@ -29,7 +29,6 @@ app.get("/api/v1/translate", (request, response) => {
         );
       })
       .catch(err => {
-        console.error({ err }, "MESSAGA: ", err.message);
         response
           .status(err.code ? err.code : 500)
           .send(err.message ? err.message : "error occured.");
@@ -38,7 +37,7 @@ app.get("/api/v1/translate", (request, response) => {
 });
 app.listen(port, err => {
   if (err) {
-    return console.log("something bad happened", err);
+    return console.log("something doing wrong", err);
   }
   console.log(`server is listening on ${port}`);
 });
