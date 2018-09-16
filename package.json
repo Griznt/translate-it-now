@@ -13,7 +13,8 @@
     "google-translate-api": "2.3.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts build&&node ./src/server/server.js",
+    "start-web": "react-scripts start",
     "build": "react-scripts build",
     "start-server": "react-scripts build&&node ./src/server/server.js",
     "production": "react-scripts build&&",
