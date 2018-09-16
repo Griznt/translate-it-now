@@ -1,9 +1,9 @@
 import axios from "axios";
-import { SERVER_URL, TRANSLATE_API_URL } from "../const";
+import { TRANSLATE_API_URL } from "../const";
 
 // Abstract API request function
 function makeApiRequest(data, authNeeded) {
-  let url = /*SERVER_URL*/ +TRANSLATE_API_URL;
+  let url = TRANSLATE_API_URL;
 
   url += "?text=" + encodeURI(data.source.text);
 
