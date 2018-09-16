@@ -1,9 +1,9 @@
 import axios from "axios";
-const SERVER_URL = "http://localhost:4000";
+import { SERVER_URL, TRANSLATE_API_URL } from "../const";
 
 // Abstract API request function
 function makeApiRequest(data, authNeeded) {
-  let url = SERVER_URL + "/api/v1/translate";
+  let url = SERVER_URL + TRANSLATE_API_URL;
 
   url += "?text=" + encodeURI(data.source.text);
 
@@ -28,7 +28,6 @@ export function translate(data, onSuccess, onFailure) {
       if (resp && resp.status === 200) {
         onSuccess(resp.data);
       } else {
-        console.warn("  ***", { resp });
         onFailure(
           `Request failed${resp ? ` with status: ${resp.status}` : ""}`
         );

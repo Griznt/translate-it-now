@@ -1,6 +1,5 @@
 import React from "react";
-
-const ACCEPTED_FILE_EXTENSIONS = [".txt"];
+import { ACCEPTED_FILE_EXTENSIONS } from "../../const";
 
 class FileInputContainer extends React.Component {
   constructor(props) {
