@@ -15,7 +15,9 @@ class App extends React.Component {
       source: {
         collapsed: false,
         text: null,
-        language: null
+        language: null,
+        filename: null,
+        extension: null
       },
       target: {
         text: null,
@@ -39,9 +41,16 @@ class App extends React.Component {
     this.saveResults = this.saveResults.bind(this);
   }
 
-  onTextLoaded(text) {
+  onTextLoaded({ text, filename, extension }) {
     if (text && text.length > 0) {
-      this.setState({ source: { ...this.state.source, text } });
+      this.setState({
+        source: {
+          ...this.state.source,
+          text,
+          filename,
+          extension
+        }
+      });
     }
   }
 
@@ -110,7 +119,22 @@ class App extends React.Component {
     });
   }
 
-  saveResults() {}
+  saveResults() {
+    const element = document.createElement("a");
+    const fileToDownload = this.state.target.text.map(sentence => {
+      return `${sentence.source}\r\n${sentence.target}\r\n\r\n`;
+    });
+    const file = new Blob(fileToDownload, {
+      type: "text/plain"
+    });
+    element.href = URL.createObjectURL(file);
+    element.download = `${this.state.source.filename}_${
+      this.state.source.language.value
+    }_to_${this.state.target.language.value}.${
+      this.state.source.extension ? this.state.source.extension : ""
+    }`;
+    element.click();
+  }
 
   render() {
     const languages = this.getParsedLanguages();
@@ -163,7 +187,7 @@ class App extends React.Component {
           </div>
           <ButtonContainer
             className="save"
-            onClick={this.save}
+            onClick={this.saveResults}
             disabled={!this.state.target.text || this.state.loading}
             text="save results"
           />

@@ -1,6 +1,6 @@
 import React from "react";
 
-const ACCEPTED_FILE_EXTENSIONS = ".txt";
+const ACCEPTED_FILE_EXTENSIONS = [".txt"];
 
 class FileInputContainer extends React.Component {
   constructor(props) {
@@ -23,9 +23,11 @@ class FileInputContainer extends React.Component {
     let file = event.target.files[0];
 
     if (file) {
-      if (
-        ACCEPTED_FILE_EXTENSIONS.includes(this.parseFileExtension(file.name))
-      ) {
+      const isLegalExtension = ACCEPTED_FILE_EXTENSIONS.map(extension =>
+        extension.includes(this.parseFileExtension(file.name))
+      ).reduce((o1, o2) => o1 || o2);
+
+      if (isLegalExtension) {
         this.setState({ selected: file.name });
         let data = new FormData();
         data.append("file", file);
@@ -65,7 +67,16 @@ class FileInputContainer extends React.Component {
   }
 
   onTextLoaded(text) {
-    this.props.onTextLoaded(text);
+    const extension = this.parseFileExtension(this.state.selected),
+      filename = extension
+        ? this.state.selected.replace(extension, "")
+        : "translated";
+
+    this.props.onTextLoaded({
+      text,
+      filename,
+      extension
+    });
   }
 
   render() {
