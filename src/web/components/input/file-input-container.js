@@ -6,6 +6,7 @@ class FileInputContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      selected: null,
       error: null
     };
 
@@ -15,13 +16,17 @@ class FileInputContainer extends React.Component {
   }
 
   uploadFile(event) {
-    this.setState({ error: null });
+    this.setState({
+      error: null,
+      selected: null
+    });
     let file = event.target.files[0];
 
     if (file) {
       if (
         ACCEPTED_FILE_EXTENSIONS.includes(this.parseFileExtension(file.name))
       ) {
+        this.setState({ selected: file.name });
         let data = new FormData();
         data.append("file", file);
 
@@ -79,7 +84,7 @@ class FileInputContainer extends React.Component {
           </div>
         ) : null}
         <label for="upload" class="file-upload__label">
-          Select file
+          {this.state.selected ? this.state.selected : "Select file"}
         </label>
         <input
           id="upload"

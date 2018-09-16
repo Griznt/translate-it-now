@@ -36,6 +36,7 @@ class App extends React.Component {
     this.toggleSourceText = this.toggleSourceText.bind(this);
     this.toggleHighlight = this.toggleHighlight.bind(this);
     this.getParsedLanguages = this.getParsedLanguages.bind(this);
+    this.saveResults = this.saveResults.bind(this);
   }
 
   onTextLoaded(text) {
@@ -109,12 +110,13 @@ class App extends React.Component {
     });
   }
 
+  saveResults() {}
+
   render() {
     const languages = this.getParsedLanguages();
     return (
       <div className="app">
         <span className="logo-text">TRANSLATE IT! APP</span>
-
         <div className="sidebar-left">
           <FileInputContainer
             className="source-text-load"
@@ -159,6 +161,12 @@ class App extends React.Component {
               <span />
             </div>
           </div>
+          <ButtonContainer
+            className="save"
+            onClick={this.save}
+            disabled={!this.state.target.text || this.state.loading}
+            text="save results"
+          />
         </div>
         <div className="text-block">
           {this.state.loading ? <Loader className="loader" /> : null}
