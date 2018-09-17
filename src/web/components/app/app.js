@@ -142,7 +142,7 @@ class App extends React.Component {
     const languages = this.getParsedLanguages();
     return (
       <div className="app">
-        <span className="logo-text">TRANSLATE IT! APP</span>
+        <span className="logo-text">TRANSLATE IT!</span>
         <FileUploadContainer
           languages={languages}
           onTextLoaded={this.onTextLoaded}
