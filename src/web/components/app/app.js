@@ -3,9 +3,9 @@ import "../../css/main.css";
 import FileInputContainer from "../input/file-input-container";
 import SelectContainer from "../select/select-container";
 import ButtonContainer from "../button/button-container";
-import Loader from "../loader/loader";
 import { translate as translateApi } from "../../axios/translate";
-import { LANGUAGES } from "../../const";
+import { LANGUAGES, SENTENCES_REGEXP } from "../../const";
+import TextBlockContainer from "../text-block/text-block-container";
 
 class App extends React.Component {
   constructor(props) {
@@ -46,7 +46,10 @@ class App extends React.Component {
       this.setState({
         source: {
           ...this.state.source,
-          text,
+          text: text
+            .replace("\r\n", "")
+            .match(SENTENCES_REGEXP)
+            .join("\r\n"),
           filename,
           extension
         }
@@ -193,62 +196,14 @@ class App extends React.Component {
             text="save results"
           />
         </div>
-        <div className="text-block">
-          {this.state.loading ? <Loader className="loader" /> : null}
-          {this.state.source.text ? (
-            <div
-              className={`source-text${
-                this.state.source.collapsed ? " collapsed" : ""
-              }`}
-            >
-              <div className="header" onClick={this.toggleSourceText}>
-                Source text
-              </div>
-              {/* @TODO: change to textarea */}
-              <div className="content">
-                {this.state.source.text.split("\n").map((item, key) => {
-                  return (
-                    <div className="sentence" key={key}>
-                      <span className="source">{item}</span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          ) : null}
-          {this.state.error ? (
-            <div className="error">{this.state.error}</div>
-          ) : this.state.target.text ? (
-            <div
-              className={`target-text${
-                this.state.source.collapsed ? " extended" : ""
-              }`}
-            >
-              <div className="header">Translated text</div>
-              <div
-                className={`content${
-                  this.state.source.collapsed ? " extended" : ""
-                }`}
-              >
-                {this.state.target.text.map((item, key) => {
-                  return (
-                    <div className="sentence" key={key}>
-                      <span className="source">{item.source}</span>
-                      <span
-                        className={`target${
-                          this.state.translateHighlighted ? " highlighted" : ""
-                        }`}
-                      >
-                        {item.target}
-                      </span>
-                      <br />
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          ) : null}
-        </div>
+        <TextBlockContainer
+          loading={this.state.loading}
+          source={this.state.source}
+          toggleSourceText={this.toggleSourceText}
+          error={this.state.error}
+          target={this.state.target}
+          translateHighlighted={this.state.translateHighlighted}
+        />
       </div>
     );
   }

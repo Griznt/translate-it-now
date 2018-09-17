@@ -28,8 +28,6 @@ class FileInputContainer extends React.Component {
 
       if (isLegalExtension) {
         this.setState({ selected: file.name });
-        let data = new FormData();
-        data.append("file", file);
 
         this.readFile(file);
       } else {
@@ -84,7 +82,7 @@ class FileInputContainer extends React.Component {
 
   render() {
     return (
-      <div class="file-upload">
+      <div className="file-upload">
         {this.state.error ? (
           <div className={`${this.props.className} error`}>
             {this.state.error.message.split("\r\n").map((item, key) => {

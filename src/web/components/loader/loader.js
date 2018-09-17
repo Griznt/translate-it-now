@@ -4,7 +4,7 @@ import "./loader.css";
 const Loader = props => {
   return (
     <div className={props.className}>
-      <div class="lds-ellipsis">
+      <div className="lds-ellipsis">
         <div />
         <div />
         <div />

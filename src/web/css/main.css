@@ -108,6 +108,7 @@ div.language__control:hover {
   background: rgb(255, 255, 255);
   border-radius: 0.4em;
   transition: background 0.3s;
+  white-space: nowrap;
 }
 .file-upload__input {
   position: absolute;
