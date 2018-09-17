@@ -2,107 +2,17 @@ import React from "react";
 import { ACCEPTED_FILE_EXTENSIONS } from "../../const";
 
 class FileInputContainer extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selected: null,
-      error: null
-    };
-
-    this.uploadFile = this.uploadFile.bind(this);
-    this.readFile = this.readFile.bind(this);
-    this.onTextLoaded = this.onTextLoaded.bind(this);
-  }
-
-  uploadFile(event) {
-    this.setState({
-      error: null,
-      selected: null
-    });
-    let file = event.target.files[0];
-
-    if (file) {
-      const isLegalExtension = ACCEPTED_FILE_EXTENSIONS.map(extension =>
-        extension.includes(this.parseFileExtension(file.name))
-      ).reduce((o1, o2) => o1 || o2);
-
-      if (isLegalExtension) {
-        this.setState({ selected: file.name });
-
-        this.readFile(file);
-      } else {
-        this.setState({
-          error: {
-            message: `Incorrect file extension!\r\nOnly [${ACCEPTED_FILE_EXTENSIONS}] is allowed.`
-          }
-        });
-        console.error("Incorrect file extension!");
-      }
-    } else {
-      this.setState({
-        error: {
-          message: "Incorrect file!"
-        }
-      });
-      console.error("Incorrect file!");
-    }
-  }
-
-  readFile(file) {
-    const reader = new FileReader();
-
-    return new Promise((resolve, reject) => {
-      reader.onload = event => resolve(event.target.result);
-      reader.onerror = error => reject(error);
-      reader.readAsText(file);
-    })
-      .then(text => this.onTextLoaded(text))
-      .catch(error => {
-        this.setState({ error });
-        console.error({ error });
-      });
-  }
-
-  parseFileExtension(filename) {
-    return /[.]/.exec(filename) ? /[^.]+$/.exec(filename) : undefined;
-  }
-
-  onTextLoaded(text) {
-    const extension = this.parseFileExtension(this.state.selected),
-      filename = extension
-        ? this.state.selected.replace(extension, "")
-        : "translated";
-
-    this.props.onTextLoaded({
-      text,
-      filename,
-      extension
-    });
-  }
-
   render() {
     return (
       <div className="file-upload">
-        {this.state.error ? (
-          <div className={`${this.props.className} error`}>
-            {this.state.error.message.split("\r\n").map((item, key) => {
-              return (
-                <span key={key}>
-                  {item}
-                  <br />
-                </span>
-              );
-            })}
-          </div>
-        ) : null}
         <label className="file-upload__label">
-          {this.state.selected ? this.state.selected : "Select file"}
+          {this.props.selected ? this.props.selected : "Select file"}
           <input
             id="upload"
             className="file-upload__input"
             type="file"
             name="file-upload"
-            onChange={this.uploadFile}
+            onChange={this.props.uploadFile}
             accept={ACCEPTED_FILE_EXTENSIONS}
             disabled={this.props.disabled}
           />

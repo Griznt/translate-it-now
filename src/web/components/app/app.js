@@ -1,11 +1,10 @@
 import React from "react";
-import "../../css/main.css";
-import FileInputContainer from "../input/file-input-container";
-import SelectContainer from "../select/select-container";
-import ButtonContainer from "../button/button-container";
 import { translate as translateApi } from "../../axios/translate";
 import { LANGUAGES, SENTENCES_REGEXP } from "../../const";
 import TextBlockContainer from "../text-block/text-block-container";
+import FileUploadContainer from "../file-upload-container/file-upload-container";
+
+import "../../css/main.css";
 
 class App extends React.Component {
   constructor(props) {
@@ -144,58 +143,19 @@ class App extends React.Component {
     return (
       <div className="app">
         <span className="logo-text">TRANSLATE IT! APP</span>
-        <div className="sidebar-left">
-          <FileInputContainer
-            className="source-text-load"
-            onTextLoaded={this.onTextLoaded}
-            disabled={this.state.loading}
-          />
-          <SelectContainer
-            options={languages}
-            className="language"
-            settings={{
-              placeholder: "select source language",
-              isSearchable: true,
-              isClearable: true,
-              isDisabled: !this.state.source.text || this.state.loading
-            }}
-            onSelect={this.onSelectSourceLanguage}
-          />
-          <SelectContainer
-            options={languages}
-            className="language"
-            settings={{
-              placeholder: "select target language",
-              isSearchable: true,
-              isClearable: true,
-              isDisabled: !this.state.source.language || this.state.loading
-            }}
-            onSelect={this.onSelectTargetLanguage}
-          />
-          <ButtonContainer
-            className="translate"
-            onClick={this.translate}
-            disabled={!this.state.target.language || this.state.loading}
-            text="translateIt!"
-          />
-          <div className="highlight-switcher" onClick={this.toggleHighlight}>
-            <span className="label">Highlight translated sentences</span>
-            <div className="checkbox">
-              <input
-                type="checkbox"
-                checked={this.state.translateHighlighted}
-                onChange={this.toggleHighlight}
-              />
-              <span />
-            </div>
-          </div>
-          <ButtonContainer
-            className="save"
-            onClick={this.saveResults}
-            disabled={!this.state.target.text || this.state.loading}
-            text="save results"
-          />
-        </div>
+        <FileUploadContainer
+          languages={languages}
+          onTextLoaded={this.onTextLoaded}
+          loading={this.state.loading}
+          source={this.state.source}
+          onSelectSourceLanguage={this.onSelectSourceLanguage}
+          onSelectTargetLanguage={this.onSelectTargetLanguage}
+          translate={this.translate}
+          target={this.state.target}
+          toggleHighlight={this.toggleHighlight}
+          translateHighlighted={this.state.translateHighlighted}
+          saveResults={this.saveResults}
+        />
         <TextBlockContainer
           loading={this.state.loading}
           source={this.state.source}
