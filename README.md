@@ -1,8 +1,8 @@
 # translateit
 
-### Simple app for translate text from loaded file and saving translated text in the file. Each translated sentence will located after source sentence. At end you can save translate results in to a file.
+Simple app for translate text from loaded file and saving translated text in the file. Each translated sentence will located after source sentence. At end you can save translate results in to a file.
 
-![alt text](https://preview.ibb.co/gwmWme/translateit.jpg)
+![alt text](https://preview.ibb.co/ffmdzz/translateit.jpg)
 
 ### demo: https://translateitnow.herokuapp.com/
 
