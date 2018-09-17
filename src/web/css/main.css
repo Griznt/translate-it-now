@@ -243,3 +243,30 @@ div.language__control:hover {
 .error {
   color: red;
 }
+.upload-file-zone .error {
+  margin: 10px 25%;
+  height: 17px;
+}
+.dropzone {
+  width: 220px;
+  height: 57px;
+}
+.dropzone__active {
+  position: relative;
+  border-width: 4px;
+  border-color: rgb(255, 255, 255);
+  border-style: dashed;
+  border-radius: 5px;
+  margin: 2px;
+  width: 210px;
+  height: 47px;
+}
+span.dropzone__inner-text {
+  position: absolute;
+  margin: 8% 20%;
+  color: white;
+  font-size: 16px;
+}
+.dropzone.dropzone__active .file-upload {
+  opacity: 0;
+}
