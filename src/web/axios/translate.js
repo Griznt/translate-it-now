@@ -3,21 +3,16 @@ import { TRANSLATE_API_URL } from "../const";
 
 // Abstract API request function
 function makeApiRequest(data, authNeeded) {
-  let url = TRANSLATE_API_URL;
-
-  url += "?text=" + encodeURI(data.source.text);
-
-  url += "&target=" + data.target.language.value;
-  url += "&source=" + data.source.language.value;
-
   // Return response from API
-  return axios.get(url, {
-    data: data ? JSON.stringify(data) : "",
-    dataType: "json",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json"
-    }
+  return axios.post(TRANSLATE_API_URL, {
+      text: data.source.text,
+      from: data.source.language.value,
+      to: data.target.language.value,
+      dataType: "json",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      }
   });
 }
 

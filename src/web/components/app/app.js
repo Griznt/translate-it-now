@@ -45,12 +45,17 @@ class App extends React.Component {
       this.setState({
         source: {
           ...this.state.source,
-          text: text
-            .replace("\r\n", "")
-            .match(SENTENCES_REGEXP)
-            .join("\r\n"),
+          text,
+          // .replace("\r", "")
+          // .replace("\n", "").split()
+          // // .match(SENTENCES_REGEXP)
+          // .join("\r\n"),
           filename,
           extension
+        },
+        target: {
+          text: null,
+          language: null
         }
       });
     }
