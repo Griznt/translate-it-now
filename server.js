@@ -3,6 +3,7 @@ const cors = require("cors");
 const translate = require("google-translate-api");
 const bodyParser = require("body-parser");
 const SENTENCES_REGEXP = /((?!=|\.).)+(.)/g;
+const MAX_STRING_LENGTH = 4; //4500
 
 const port = process.env.PORT || 3000;
 const app = express();
@@ -20,19 +21,27 @@ app.post("/api/v1/translate", (request, response) => {
   const { text, from, to } = request.body;
 
   let arraySentences = null;
-  if (text.length > 5000) {
+  if (text.length > MAX_STRING_LENGTH) {
     arraySentences = [];
-    splitTextIntoSentences(text).reduce((current, next) => {
-      if (current.length + next.length <= 5000) return (current += next);
-      else {
+
+    splitTextIntoSentences(text).reduce((current, next, index, arr) => {
+      if (current.length + next.length <= MAX_STRING_LENGTH) {
+        if (arr[arr.length - 1] === next) {
+          arraySentences.push((current += `\r\n${next}`));
+        }
+        return (current += `\r\n${next}`);
+      } else {
         arraySentences.push(current);
+        if (arr[arr.length - 1] === next) {
+          arraySentences.push(next);
+        }
         return next;
       }
-    });
+    }, "");
   }
   try {
     translateText({
-      textArray: arraySentences || [text],
+      textArray: arraySentences || [text], // .map(item => splitTextIntoSentences(item).join("\r\n")) // .filter(item => !!item) // splitTextIntoSentences(text).join("\r\n"),
       from,
       to
     })
@@ -94,10 +103,9 @@ function translateText({ textArray, from, to }) {
 }
 
 function parseTranslateResults({ sourceText, targetText }) {
-  const sourceArray = splitTextIntoSentences(sourceText),
-    targetArray = splitTextIntoSentences(targetText);
+  const sourceArray = sourceText.split("\r\n"),
+    targetArray = targetText.split("\r\n");
   const result = [];
-
   sourceArray.forEach((sentence, i) => {
     result.push({ source: sentence, target: targetArray[i] });
   });

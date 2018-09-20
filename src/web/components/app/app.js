@@ -1,6 +1,6 @@
 import React from "react";
 import { translate as translateApi } from "../../axios/translate";
-import { LANGUAGES, SENTENCES_REGEXP } from "../../const";
+import { LANGUAGES } from "../../const";
 import TextBlockContainer from "../text-block/text-block-container";
 import FileUploadContainer from "../file-upload-container/file-upload-container";
 
@@ -46,10 +46,6 @@ class App extends React.Component {
         source: {
           ...this.state.source,
           text,
-          // .replace("\r", "")
-          // .replace("\n", "").split()
-          // // .match(SENTENCES_REGEXP)
-          // .join("\r\n"),
           filename,
           extension
         },
