@@ -39,7 +39,7 @@ app.post("/api/v1/translate", (request, response) => {
       .then(results => {
         response.status(200).send(
           parseTranslateResults(
-            results.reduce((current, next) => {
+            results.sort((o1, o2) => o1.i > o2.i).reduce((current, next) => {
               return {
                 sourceText: current.sourceText + next.sourceText,
                 targetText: current.targetText + next.targetText
@@ -71,7 +71,7 @@ function translateText({ textArray, from, to }) {
   return new Promise((resolve, reject) => {
     if (!textArray) reject("Bad Request params");
     const results = [];
-    textArray.forEach(element => {
+    textArray.forEach((element, i) => {
       if (!element) reject("Bad Request params");
       translate(element, {
         from: from || "auto",
@@ -79,6 +79,7 @@ function translateText({ textArray, from, to }) {
       })
         .then(res => {
           results.push({
+            i,
             sourceText: element,
             targetText: res.text
           });
@@ -96,10 +97,6 @@ function parseTranslateResults({ sourceText, targetText }) {
   const sourceArray = splitTextIntoSentences(sourceText),
     targetArray = splitTextIntoSentences(targetText);
   const result = [];
-  console.log({
-    sourceArray: sourceArray.length,
-    targetArray: targetArray.length
-  });
 
   sourceArray.forEach((sentence, i) => {
     result.push({ source: sentence, target: targetArray[i] });
