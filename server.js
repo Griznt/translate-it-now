@@ -1,9 +1,12 @@
 const express = require("express");
 const cors = require("cors");
-const translate = require("google-translate-api");
 const bodyParser = require("body-parser");
 const SENTENCES_REGEXP = /((?!=|\.).)+(.)/g;
 const MAX_STRING_LENGTH = 4; //4500
+// const translate = require("google-translate-api");
+const YANDEX_API_KEY =
+  "trnsl.1.1.20180921T133552Z.4ceccb513e8e9ce0.36e668fdb19a2fcaecd6b8977e380eb0fb4071ef";
+const translate = require("yandex-translate")(YANDEX_API_KEY);
 
 const port = process.env.PORT || 3000;
 const app = express();
@@ -46,15 +49,20 @@ app.post("/api/v1/translate", (request, response) => {
       to
     })
       .then(results => {
+        console.log({ results });
         response.status(200).send(
-          parseTranslateResults(
-            results.sort((o1, o2) => o1.i > o2.i).reduce((current, next) => {
-              return {
-                sourceText: current.sourceText + next.sourceText,
-                targetText: current.targetText + next.targetText
-              };
-            })
-          )
+          // parseTranslateResults(
+          results.sort((o1, o2) => o1.i > o2.i).map(item => {
+            return { source: item.sourceText, target: item.targetText };
+          })
+          // .reduce((current, next) => {
+          //   return {
+          //     sourceText: current.sourceText + next.sourceText,
+          //     targetText: current.targetText + next.targetText
+          //   };
+          // }
+          // )
+          // )
         );
       })
       .catch(error => catchError({ error, response }));
@@ -76,29 +84,43 @@ app.listen(port, err => {
   console.log(`server is listening on ${port}`);
 });
 
+function translateIt(text, { from, to }) {
+  return new Promise((resolve, reject) => {
+    translate.translate(text, { from, to }, (err, res) => {
+      console.log({ from, to, err, res });
+      if (err) reject(err);
+      else if (res.code === 200) resolve(res.text);
+      else reject(res);
+    });
+  });
+}
+
 function translateText({ textArray, from, to }) {
   return new Promise((resolve, reject) => {
     if (!textArray) reject("Bad Request params");
     const results = [];
-    textArray.forEach((element, i) => {
-      if (!element) reject("Bad Request params");
-      translate(element, {
-        from: from || "auto",
-        to: to || "en"
-      })
-        .then(res => {
-          results.push({
-            i,
-            sourceText: element,
-            targetText: res.text
-          });
-          if (results.length === textArray.length) resolve(results);
+    textArray
+      .map(element => (element.length > 0 ? element : "\r\n"))
+      .forEach((element, i) => {
+        if (!element) reject("Bad Request params");
+        translateIt(element, {
+          from: from || "auto",
+          to: to || "en"
         })
-        .catch(err => {
-          console.error({ err });
-          reject("Bad Request");
-        });
-    });
+          .then(res => {
+            results.push({
+              i,
+              sourceText: element,
+              targetText: res[0]
+            });
+            console.log(i, { results });
+            if (results.length === textArray.length) resolve(results);
+          })
+          .catch(err => {
+            console.error({ err });
+            reject("Bad Request");
+          });
+      });
   });
 }
 
