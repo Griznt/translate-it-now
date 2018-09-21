@@ -1,8 +1,6 @@
 export const TRANSLATE_API_URL = "/api/v1/translate";
-export const ACCEPTED_FILE_EXTENSIONS = [".txt"];
-export const SENTENCES_REGEXP = /[^.!?]+[.!?]+/g;
+export const ACCEPTED_FILE_EXTENSIONS = [".txt", ".md"];
 export const LANGUAGES = {
-  auto: "Automatic",
   af: "Afrikaans",
   sq: "Albanian",
   am: "Amharic",

@@ -1,10 +1,17 @@
 const express = require("express");
 const cors = require("cors");
-const translate = require("google-translate-api");
+const bodyParser = require("body-parser");
+const SENTENCES_REGEXP = /((?!=|\.).)+(.)/g;
+
+require("dotenv").config();
+
+const translate = require("yandex-translate")(process.env.YANDEX_API_KEY);
 
 const port = process.env.PORT || 3000;
 const app = express();
 app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static(`${__dirname}/build`));
 
@@ -12,44 +19,76 @@ app.get("/", (request, response) => {
   response.status(200).sendFile(`${__dirname}/build/index.html`);
 });
 
-app.get("/api/v1/translate", (request, response) => {
-  const query = request.query;
-
-  if (query.text) {
-    translate(query.text, {
-      from: query.source ? query.source : "auto",
-      to: query.target ? query.target : "en"
+app.post("/api/v1/translate", (request, response) => {
+  try {
+    const { text, from, to } = request.body;
+    translateText({
+      textArray: splitTextIntoSentences(text),
+      from,
+      to
     })
-      .then(res => {
-        response.status(200).send(
-          parseTranslateResults({
-            sourceText: query.text,
-            targetText: res.text
-          })
-        );
+      .then(results => {
+        response.status(200).send(results);
       })
-      .catch(err => {
-        response
-          .status(err.code ? err.code : 500)
-          .send(err.message ? err.message : "error occured.");
-      });
+      .catch(error => catchError({ error, response }));
+  } catch (error) {
+    catchError({ error, response });
   }
 });
+
+function catchError({ error, response }) {
+  console.error("catchError", { error });
+  response
+    .status(error.code >= 100 && error.code < 600 ? error.code : 500)
+    .send(error.message ? error.message : "error occured.");
+}
 app.listen(port, err => {
   if (err) {
-    return console.log("something doing wrong", err);
+    return console.error("something doing wrong", err);
   }
   console.log(`server is listening on ${port}`);
 });
 
-function parseTranslateResults({ sourceText, targetText }) {
-  const sourceArray = sourceText.split("\n"),
-    targetArray = targetText.split("\n");
-
-  const result = [];
-
-  sourceArray.forEach((sentanse, i) => {
-    result.push({ source: sentanse, target: targetArray[i] });
+function translateIt(text, { from, to }) {
+  return new Promise((resolve, reject) => {
+    translate.translate(text, { from, to }, (err, res) => {
+      if (err) reject(err);
+      else if (res.code === 200) resolve(res.text);
+      else reject(res);
+    });
   });
-  return result;
+}
+
+function translateText({ textArray, from, to }) {
+  return new Promise((resolve, reject) => {
+    if (!textArray) reject("Bad Request params");
+    const results = [];
+    textArray
+      .map(element => {
+        return element.length > 0 ? element : "\r\n";
+      })
+      .forEach((element, i) => {
+        if (!element) reject("Bad Request params");
+        translateIt(element, {
+          from: from || "auto",
+          to: to || "en"
+        })
+          .then(res => {
+            results.push({
+              i,
+              source: element,
+              target: res[0]
+            });
+            if (results.length === textArray.length) resolve(results);
+          })
+          .catch(err => {
+            console.error({ err });
+            reject("Bad Request");
+          });
+      });
+  });
+}
+
+function splitTextIntoSentences(text) {
+  return text.match(SENTENCES_REGEXP);
 }

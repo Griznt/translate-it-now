@@ -1,8 +1,9 @@
 import React from "react";
 import { translate as translateApi } from "../../axios/translate";
-import { LANGUAGES, SENTENCES_REGEXP } from "../../const";
+import { LANGUAGES } from "../../const";
 import TextBlockContainer from "../text-block/text-block-container";
 import FileUploadContainer from "../file-upload-container/file-upload-container";
+import orderBy from "lodash/orderBy";
 
 import "../../css/main.css";
 
@@ -45,12 +46,14 @@ class App extends React.Component {
       this.setState({
         source: {
           ...this.state.source,
-          text: text
-            .replace("\r\n", "")
-            .match(SENTENCES_REGEXP)
-            .join("\r\n"),
+          text,
           filename,
-          extension
+          extension,
+          collapsed: false
+        },
+        target: {
+          ...this.state.target,
+          text: null
         }
       });
     }
@@ -69,7 +72,10 @@ class App extends React.Component {
   onTranslateSuccess(text) {
     this.clearError();
     this.setState({
-      target: { ...this.state.target, text },
+      target: {
+        ...this.state.target,
+        text: orderBy(text, ["i"], ["asc"])
+      },
       loading: false,
       source: { ...this.state.source, collapsed: true }
     });

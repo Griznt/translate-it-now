@@ -21,4 +21,8 @@ yarn-debug.log*
 yarn-error.log*
 
 #vscode
-/.vscode
+/build
+/scripts
+
+#env
+.env

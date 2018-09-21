@@ -1,6 +1,16 @@
 # translateit
 
-Simple app for translate text from loaded file and saving translated text in the file. Each translated sentence will located after source sentence. At end you can save translate results in to a file.
+Simple app for translate text from loaded file and then save it in the txt file.
+Each translated sentence will be located after source sentence.
+In the end you can save translated results in to a file.
+
+Yandex Translate API engine used http://translate.yandex.ru/.
+
+You can get YANDEX_API_KEY here: https://translate.yandex.ru/developers/keys It's have limits, but free.
+
+### .env
+
+You need add recieved YANDEX_API_KEY in your .env file: `YANDEX_API_KEY=trnsl.1.1....`
 
 ![alt text](https://preview.ibb.co/ffmdzz/translateit.jpg)
 
