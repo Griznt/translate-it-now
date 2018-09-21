@@ -48,7 +48,8 @@ class App extends React.Component {
           ...this.state.source,
           text,
           filename,
-          extension
+          extension,
+          collapsed: false
         },
         target: {
           ...this.state.target,
