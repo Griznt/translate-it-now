@@ -41,15 +41,16 @@ class FileUploadContainer extends React.Component {
             message: `Incorrect file extension!\r\nOnly [${ACCEPTED_FILE_EXTENSIONS}] is allowed.`
           }
         });
-        console.error("Incorrect file extension!");
+        console.error(
+          `Incorrect file extension!\r\nOnly [${ACCEPTED_FILE_EXTENSIONS}] is allowed.`
+        );
       }
     } else {
       this.setState({
         error: {
-          message: "Incorrect file!"
+          message: `Incorrect file extension!\r\nOnly [${ACCEPTED_FILE_EXTENSIONS}] is allowed.`
         }
       });
-      console.error("Incorrect file!");
     }
   }
 
@@ -141,9 +142,8 @@ class FileUploadContainer extends React.Component {
           options={this.props.languages}
           className="language"
           settings={{
-            placeholder: "select source language",
+            placeholder: "source language",
             isSearchable: true,
-            isClearable: true,
             isDisabled: !this.props.source.text || this.props.loading
           }}
           onSelect={this.props.onSelectSourceLanguage}
@@ -152,9 +152,8 @@ class FileUploadContainer extends React.Component {
           options={this.props.languages}
           className="language"
           settings={{
-            placeholder: "select target language",
+            placeholder: "target language",
             isSearchable: true,
-            isClearable: true,
             isDisabled: !this.props.source.language || this.props.loading
           }}
           onSelect={this.props.onSelectTargetLanguage}

@@ -51,6 +51,7 @@ class App extends React.Component {
           extension
         },
         target: {
+          ...this.state.target,
           text: null
         }
       });
