@@ -170,6 +170,11 @@ class App extends React.Component {
           target={this.state.target}
           translateHighlighted={this.state.translateHighlighted}
         />
+        <div className="translated_by_licence">
+          Translated by <span className="first_letter">Y</span>
+          andex{" "}
+          <a href="http://translate.yandex.ru/">http://translate.yandex.ru/</a>
+        </div>
       </div>
     );
   }
