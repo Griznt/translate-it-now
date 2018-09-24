@@ -270,3 +270,20 @@ span.dropzone__inner-text {
 .dropzone.dropzone__active .file-upload {
   opacity: 0;
 }
+.translated_by_licence {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  margin: 10px;
+  color: white;
+}
+.translated_by_licence span.first_letter {
+  color: red;
+}
+.translated_by_licence a {
+  color: white;
+}
+.translated_by_licence a:hover {
+  color: rgb(255, 91, 91);
+  cursor: pointer;
+}
